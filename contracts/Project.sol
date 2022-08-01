@@ -100,7 +100,8 @@ contract Project is ERC721 {
     contributors[msg.sender].amount = 0;
     address payable recepient = payable(msg.sender);
 
-    recepient.transfer(value);
+    (bool success, ) = recepient.call{ value: value }("");
+    require(success, "transfer failed");
     emit ContributorRefunded(msg.sender, value);
   }
 
